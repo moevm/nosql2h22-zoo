@@ -1,0 +1,32 @@
+{
+  "ticket1": {
+    "date": "2022-11-24",
+    "FIO": "Пя Сон Хва",
+    "price": "100"
+  },
+  "timetable1": {
+    "day": "Четверг",
+    "from": "12:00:00",
+    "to": "20:00:00"
+  },
+  "employee1": {
+    "FIO": "Балаева Милана Олеговна",
+    "position": "Уборщица"
+  },
+  "animal1": {
+    "name": "Пингвин",
+    "kind": "Императорский пингвин",
+    "gender": "male",
+    "aviary": "1"
+  },
+  "schedule1": {
+    "id_employee": "employee1",
+    "id_timetable": "timetable1",
+    "id_animal": "animal1"
+  },
+  "ticket2": {
+    "date": "2022-11-24",
+    "FIO": "Пя Сон Хва",
+    "price": "200"
+  }
+}
