@@ -8,23 +8,18 @@ CORS(app)
 
 @app.route("/")
 def hello():
-    return do_stuff()
+    init_database()
+    return "Backend has started!"
 
-@app.route('/users', methods=["GET", "POST"])
-def users():
-    print("users endpoint reached...")
+@app.route('/database', methods=["GET", "POST"])
+def request_database():
+    print("database endpoint reached...")
     if request.method == "GET":
-        with open("/database.json", "r") as f:
-            data = json.load(f)
-            data.append({
-                "username": "user4",
-                "pets": ["hamster"]
-            })
-
-            return flask.jsonify(data)
+        return get_database()
     if request.method == "POST":
         received_data = request.get_json()
         print(f"received data: {received_data}")
+        add_to_database(received_data['data'])
         message = received_data['data']
         return_data = {
             "status": "success",
@@ -33,4 +28,4 @@ def users():
         return flask.Response(response=json.dumps(return_data), status=201)
 
 if __name__ == "__main__":
-    app.run("localhost", 5000, threaded=False)
+    app.run("localhost", port=6969, threaded=False)
