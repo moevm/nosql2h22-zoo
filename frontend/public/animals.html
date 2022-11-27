@@ -29,7 +29,15 @@
 <br>
 <div class="wrapper">
     <div class="content">
-        <p>Тут что-то о животных</p>
+        <div><span>Last update: </span><span id="time-container"></span></div>
+    <p>Заполните форму, чтобы добавить участника:
+      <input id="newN" type="text" placeholder="Имя"/>
+      <input id="newK" type="text" placeholder="Вид"/>
+        <input id="newG" type="text" placeholder="Пол"/>
+        <input id="newV" type="number" placeholder="Вольер"/>
+      <button class="buttonComponent" type="button" onclick="appendAnimal()"><b>Добавить</b></button>
+    </p>
+        <div id="sent-data-container"></div>
     </div>
 </div>
 </body>
