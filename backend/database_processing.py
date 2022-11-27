@@ -2,7 +2,6 @@ from pymemcache.client import base
 from enum import Enum
 import json
 import os
-from six import ensure_str
 
 
 def json_serializer(key, value):
@@ -21,11 +20,20 @@ def json_deserializer(key, value, flags):
 
 client = base.Client(("127.0.0.1", 11211), serializer=json_serializer, deserializer=json_deserializer)
 
+
 def get_value(key):
     try:
         data = client.get(key)
     except Exception:  # due to the mismatch of the versions, an error appears with the response from memcached
         data = client.get(key)
+    return data
+
+
+def get_many(keys):
+    try:
+        data = client.get_many(keys)
+    except Exception:  # due to the mismatch of the versions, an error appears with the response from memcached
+        data = client.get_many(keys)
     return data
 
 
@@ -37,28 +45,7 @@ def set_many(json_data):
     return client.set_many(json_data)
 
 
-def get_many(keys):
-    return client.get_many(keys)
-
-
-def get_keys_dict():
-    keys = {}
-    try:
-        items = client.stats('items').items()
-    except Exception:  # due to the mismatch of the versions, an error appears with the response from memcached
-        items = client.stats('items').items()
-        print(items)
-    for key, val in items:
-        _, slab, field = ensure_str(key).split(':')
-        if field != 'number' or val == 0:
-            continue
-        item_request = client.stats('cachedump', slab, str(val + 10))
-        for record, details in item_request.items():
-            keys[ensure_str(record)] = ensure_str(details)
-    return keys
-
-
-class Types(Enum):#for exeptions
+class Types(Enum):
     ticket = 0
     timetable = 1
     employee = 2
@@ -78,10 +65,52 @@ def export_database_from_file():
 
 
 def get_database():
-    return get_many(get_keys_dict().keys())
+    return get_many([key.name for key in Types])
+
+
+def get_collection(key):
+    return json.dumps(get_value(key), ensure_ascii=False)
+
+
+def add_to_collection(collection_name, data):
+    data[collection_name] = data
+    add_to_database(data)
+
 
 def add_to_database(data):
-    set_many(data)
+    if type(data) == str:
+        data = json.loads(data.encode('utf-8'))
+
+    items = {}
+    for key in Types:
+        collection = get_value(key.name)
+        if key.name in data:
+            if collection == None:
+                items[key.name] = data[key.name]
+            else:
+                if have_same_ids(data[key.name], collection) == False:
+                    items[key.name] = collection + data[key.name]
+    set_many(items)
+
+
+def have_same_ids(data, collection):
+    data_ids = [item["id"] for item in data]
+    collection_ids = [item["id"] for item in collection]
+    for data_id in data_ids:
+        if data_id in collection_ids:
+            return True
+    return False
+
+
+def remove_from_collection(collection_name, id):
+    collection = get_value(collection_name)
+    for item in collection:
+        if str(item["id"]) == id:
+            print("removed item ", item)
+            collection.remove(item)
+            set_value(collection_name, collection)
+            return
+
 
 def init_database():
     data = export_database_from_file()
