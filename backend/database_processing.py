@@ -1,11 +1,49 @@
 from pymemcache.client import base
 from enum import Enum
 import json
-from six import ensure_str
+import os
 
-##client = base.Client(("127.0.0.1", 11211), serializer=json_serializer, deserializer=json_deserializer)
-# server parameter of base.client is held as a tuple (host, port)
-client = base.Client(("127.0.0.1", 11211))
+
+def json_serializer(key, value):
+    if type(value) == str:
+        return value.encode('utf-8'), 1
+    return json.dumps(value, ensure_ascii=False).encode('utf-8'), 2
+
+
+def json_deserializer(key, value, flags):
+    if flags == 1:
+        return value.decode('utf-8')
+    if flags == 2:
+        return json.loads(value.decode('utf-8'))
+    raise Exception("Unknown serialization format")
+
+
+client = base.Client(("127.0.0.1", 11211), serializer=json_serializer, deserializer=json_deserializer)
+
+
+def get_value(key):
+    try:
+        data = client.get(key)
+    except Exception:  # due to the mismatch of the versions, an error appears with the response from memcached
+        data = client.get(key)
+    return data
+
+
+def get_many(keys):
+    try:
+        data = client.get_many(keys)
+    except Exception:  # due to the mismatch of the versions, an error appears with the response from memcached
+        data = client.get_many(keys)
+    return data
+
+
+def set_value(key, value):
+    return client.set(key, value)
+
+
+def set_many(json_data):
+    return client.set_many(json_data)
+
 
 class Types(Enum):
     ticket = 0
@@ -14,110 +52,70 @@ class Types(Enum):
     animal = 3
     schedule = 4
 
-database = {"tickets" : {}, "timetables" : {}, "employees" : {}, "animals" : {}, "schedules": {} }
-
-def get_value(key):
-    return client.get(key).decode('utf8')
-
-def set_value(key, value):
-    return client.set(key, value)
-
-def get_keys_dict():
-    keys = {}
-    try:
-        items = client.stats('items').items()
-    except Exception:#due to the mismatch of the versions, an error appears with the response from memcached
-        items = client.stats('items').items()
-        print(items)
-    for key, val in items:
-        _, slab, field = ensure_str(key).split(':')
-        if field != 'number' or val == 0:
-            continue
-        item_request = client.stats('cachedump', slab, str(val + 10))
-        for record, details in item_request.items():
-            keys[ensure_str(record)] = ensure_str(details)
-    return keys
-
-def import_database_to_memcached():
-    global database
-    for collection_key in database.keys():
-        for item_key in database[collection_key]:
-            set_value(item_key, json.dumps(database[collection_key][item_key], ensure_ascii=False).encode("utf-8"))
-
-def export_database_from_memcached():
-    keys = get_keys_dict()
-    data = {}
-    for key in keys.keys():
-        item = get_value(key)
-        data[key] = json.loads(item)
-    return data
 
 def import_database_to_file(data):
-    with open("C:\\Users\\User\\Downloads\\basic-web-app-tutorial-main\\backend\\database.json", "w", encoding='utf-8') as f:
+    with open(os.path.dirname(os.path.abspath(__file__)) + "\\database.json", "w", encoding='utf-8') as f:
         f.write(json.dumps(data, ensure_ascii=False))
         return
 
+
 def export_database_from_file():
-    with open("C:\\Users\\User\\Downloads\\basic-web-app-tutorial-main\\backend\\database.json", "r", encoding='utf-8') as f:
+    with open(os.path.dirname(os.path.abspath(__file__)) + "\\database.json", "r", encoding='utf-8') as f:
         return json.load(f)
 
-def parse_database(json_data_dict):
-    for key in json_data_dict.keys():
-        for t in Types:
-            if t.name in key:
-                parse_to_collection(key, json_data_dict[key], t)
 
-def parse_to_collection(key, value, t):
-    global database
-    match t:
-        case Types.ticket:
-            database["tickets"][key] = {
-                "date": value["date"],
-                "FIO": value["FIO"],
-                "price": value["price"]
-            }
-        case Types.timetable:
-            database["timetables"][key] = {
-                'day': value['day'],
-                "from": value["from"],
-                "to": value["to"]
-            }
-        case Types.employee:
-            database["employees"][key] = {
-                "FIO": value["FIO"],
-                "position": value["position"]
-            }
-        case Types.animal:
-            database["animals"][key] = {
-                "name": value["name"],
-                "kind": value["kind"],
-                "gender": value["gender"],
-                "aviary": value["aviary"]
-            }
-        case Types.schedule:
-            database["schedules"][key] = {
-                "id_employee": value["id_employee"],
-                "id_timetable": value["id_timetable"],
-                "id_animal": value["id_animal"]
-            }
-        case _:  # Аналогично default в других языках
-            print(f"Error key: {key} value: {value!r} invalid key!")
+def get_database():
+    return get_many([key.name for key in Types])
 
-def serialize_database():
-    global database
-    data = {}
-    for collection_key in database.keys():
-        for item_key in database[collection_key].keys():
-            item = database[collection_key][item_key]
-            data[item_key] = item
-    return json.dumps(data, ensure_ascii=False)
 
-def do_stuff():
-    global database
+def get_collection(key):
+    return json.dumps(get_value(key), ensure_ascii=False)
+
+
+def add_to_collection(collection_name, data):
+    data[collection_name] = data
+    add_to_database(data)
+
+
+def add_to_database(data):
+    if type(data) == str:
+        data = json.loads(data.encode('utf-8'))
+
+    items = {}
+    for key in Types:
+        collection = get_value(key.name)
+        if key.name in data:
+            if collection == None:
+                items[key.name] = data[key.name]
+            else:
+                if have_same_ids(data[key.name], collection) == False:
+                    items[key.name] = collection + data[key.name]
+    set_many(items)
+
+
+def have_same_ids(data, collection):
+    data_ids = [item["id"] for item in data]
+    collection_ids = [item["id"] for item in collection]
+    for data_id in data_ids:
+        if data_id in collection_ids:
+            return True
+    return False
+
+
+def remove_from_collection(collection_name, id):
+    collection = get_value(collection_name)
+    for item in collection:
+        if str(item["id"]) == id:
+            print("removed item ", item)
+            collection.remove(item)
+            set_value(collection_name, collection)
+            return
+
+
+def init_database():
     data = export_database_from_file()
-    parse_database(data)
-    import_database_to_memcached()
-    database = {"tickets": {}, "timetables": {}, "employees": {}, "animals": {}, "schedules": {}}
-    data = export_database_from_memcached()
-    parse_database(data)
-    return json.dumps(database, ensure_ascii=False)
+    add_to_database(data)
+    database = get_database()
+    # set_value("ticket1", {"date": "2022-11-24", "FIO": "Пя Сон Хва", "price": "100"})
+    # value = get_value("ticket1")
+    print("init database: ", database)
