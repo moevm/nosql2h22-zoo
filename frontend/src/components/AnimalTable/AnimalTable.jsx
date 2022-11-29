@@ -20,12 +20,12 @@ export const AnimalTable = ({ animals }) => {
     }, {
         name: 'gender',
         render: (item) => {
-            return item?.gender;
+            return item?.['gender'];
         },
     }, {
         name: 'aviary',
         render: (item) => {
-            return item?.aviary;
+            return item?.['aviary'];
         }
     }];
 
