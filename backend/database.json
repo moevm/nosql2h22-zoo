@@ -17,14 +17,14 @@
     {
       "id": 1,
       "day": "Thursday",
-      "from": "12:00:00",
-      "to": "20:00:00"
+      "time_from": "12:00:00",
+      "time_to": "20:00:00"
     }
   ],
   "employee": [
     {
       "id": 1,
-      "FIO": "Balaeva Milana Olegovna",
+      "FIO": "Milana",
       "position": "Martyr",
       "password": "123456789"
     },

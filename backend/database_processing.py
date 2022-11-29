@@ -1,8 +1,7 @@
 from pymemcache.client import base
-from enum import Enum
+from db_types import EntityTypes
 import json
 import os
-
 
 def json_serializer(key, value):
     if type(value) == str:
@@ -45,14 +44,6 @@ def set_many(json_data):
     return client.set_many(json_data)
 
 
-class Types(Enum):
-    ticket = 0
-    timetable = 1
-    employee = 2
-    animal = 3
-    schedule = 4
-
-
 def import_database_to_file(data):
     with open(os.path.dirname(os.path.abspath(__file__)) + "\\database.json", "w", encoding='utf-8') as f:
         f.write(json.dumps(data, ensure_ascii=False))
@@ -65,7 +56,7 @@ def export_database_from_file():
 
 
 def get_database():
-    return get_many([key.name for key in Types])
+    return get_many([key.name for key in EntityTypes])
 
 
 def get_collection(key):
@@ -73,8 +64,9 @@ def get_collection(key):
 
 
 def add_to_collection(collection_name, data):
-    data[collection_name] = data
-    add_to_database(data)
+    collection = get_value(collection_name)
+    collection.append(data)
+    add_to_database({ collection_name: collection })
 
 
 def add_to_database(data):
@@ -82,14 +74,15 @@ def add_to_database(data):
         data = json.loads(data.encode('utf-8'))
 
     items = {}
-    for key in Types:
+    for key in EntityTypes:
         collection = get_value(key.name)
         if key.name in data:
-            if collection == None:
-                items[key.name] = data[key.name]
-            else:
-                if have_same_ids(data[key.name], collection) == False:
-                    items[key.name] = collection + data[key.name]
+            items[key.name] = data[key.name]
+        elif collection == None:
+            items[key.name] = []
+        else:
+            items[key.name] = collection
+
     set_many(items)
 
 
@@ -116,6 +109,4 @@ def init_database():
     data = export_database_from_file()
     add_to_database(data)
     database = get_database()
-    # set_value("ticket1", {"date": "2022-11-24", "FIO": "Пя Сон Хва", "price": "100"})
-    # value = get_value("ticket1")
     print("init database: ", database)

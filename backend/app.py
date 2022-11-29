@@ -2,6 +2,7 @@ import flask
 from flask import Flask, request
 from flask_cors import CORS
 from database_processing import *
+from utils import *
 
 app = Flask(__name__)
 CORS(app)
@@ -13,21 +14,11 @@ def hello():
     return "Backend has started!"
 
 
-@app.route('/database', methods=["GET", "POST"])
+@app.route('/database', methods=["GET"])
 def request_database():
     print("database endpoint reached...")
     if request.method == "GET":
         return get_database()
-    if request.method == "POST":
-        received_data = request.get_json()
-        print(f"received data: {received_data}")
-        add_to_database(received_data['data'])
-        message = received_data['data']
-        return_data = {
-            "status": "success",
-            "message": f"received: {message}"
-        }
-        return flask.Response(response=json.dumps(return_data), status=201)
 
 @app.route("/<collection>", methods=["GET", "POST"])
 def request_collection(collection):
@@ -35,21 +26,21 @@ def request_collection(collection):
     if request.method == "GET":
         return get_collection(collection)
 
-@app.route("/add_<collection>", methods=["GET", "POST"])
+@app.route("/add/<collection>", methods=["POST"])
 def request_add_collection(collection):
     print(f"add-{collection} endpoint reached...")
     if request.method == "POST":
-        received_data = request.get_json()
+        received_data = processing_data(collection, request.get_json())
         print(f"received data: {received_data}")
-        add_to_collection(collection, received_data['data'])
-        message = received_data['data']
+        add_to_collection(collection, received_data)
+        message = received_data
         return_data = {
             "status": "success",
             "message": f"received: {message}"
         }
         return flask.Response(response=json.dumps(return_data), status=201)
 
-@app.route("/remove_<collection>", methods=["GET", "POST"])
+@app.route("/remove/<collection>", methods=["GET", "POST"])
 def request_remove_collection(collection):
     print(f"remove-{collection} endpoint reached...")
     if request.method == "POST":
