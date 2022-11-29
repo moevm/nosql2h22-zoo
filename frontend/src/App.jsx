@@ -1,7 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./providers";
-import {AnimalPage, EmployeePage, LoginPage, TicketPage} from "./pages";
+import {AnimalPage, EmployeePage, LoginPage, TicketPage, TimetablePage} from "./pages";
 import { PrivateLayout } from "./layouts";
 import { appRoutes } from "./constants";
 
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
       },
       {
         path: appRoutes.timetable,
-        element: <div>Timetables</div>,
+        element: <TimetablePage />,
       },
       {
         path: appRoutes.ticket,
