@@ -1,19 +1,39 @@
 import React from "react";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-} from "react-router-dom";
-import {AuthProvider} from "./providers";
-import {LoginPage} from "./pages";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { AuthProvider } from "./providers";
+import {AnimalPage, EmployeePage, HomePage, LoginPage, TicketPage, TimetablePage} from "./pages";
+import { PrivateLayout } from "./layouts";
+import { appRoutes } from "./constants";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <div>Hello world!</div>,
+    path: appRoutes.root,
+    element: <PrivateLayout />,
+    children: [
+      {
+        path: appRoutes.root,
+        element: <HomePage />,
+      },
+      {
+        path: appRoutes.animal,
+        element: <AnimalPage />,
+      },
+      {
+        path: appRoutes.employee,
+        element: <EmployeePage />,
+      },
+      {
+        path: appRoutes.timetable,
+        element: <TimetablePage />,
+      },
+      {
+        path: appRoutes.ticket,
+        element: <TicketPage />,
+      },
+    ],
   },
   {
-    path: "/login",
+    path: appRoutes.login,
     element: <LoginPage />,
   },
 ]);
