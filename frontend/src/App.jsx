@@ -1,7 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./providers";
-import {AnimalPage, EmployeePage, LoginPage, TicketPage, TimetablePage} from "./pages";
+import {AnimalPage, EmployeePage, HomePage, LoginPage, TicketPage, TimetablePage} from "./pages";
 import { PrivateLayout } from "./layouts";
 import { appRoutes } from "./constants";
 
@@ -12,7 +12,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: appRoutes.root,
-        element: <div>Hello world!</div>,
+        element: <HomePage />,
       },
       {
         path: appRoutes.animal,

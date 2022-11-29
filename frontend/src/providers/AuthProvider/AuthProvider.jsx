@@ -13,6 +13,10 @@ export const AuthProvider = ({ children }) => {
         return !!userId.current;
     }, []);
 
+    const checkAdmin = React.useCallback(() => {
+        return userRole.current === 'admin';
+    }, []);
+
     const login = React.useCallback(async ({ username, password }) => {
         const data = await request('POST','login', { username, password });
         if (data.status === 'success') {
@@ -34,7 +38,14 @@ export const AuthProvider = ({ children }) => {
     }, [removeCookie]);
 
     const contextValue = React.useMemo(() => {
-        return { userId: userId.current, userRole: userRole.current, checkAuth, login, logout };
+        return {
+            userId: userId.current,
+            userRole: userRole.current,
+            checkAuth,
+            checkAdmin,
+            login,
+            logout
+        };
     }, [checkAuth, login, logout]);
 
     return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
