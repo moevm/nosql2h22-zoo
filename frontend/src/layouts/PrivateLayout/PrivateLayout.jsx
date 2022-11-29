@@ -3,13 +3,19 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 import {useAuthApp} from "../../hooks";
+import {EmployeeLayout} from "../EmployeeLayout";
+import {appRoutes} from "../../constants";
 
 export const PrivateLayout = () => {
     const { checkAuth } = useAuthApp();
-    console.log(checkAuth())
+
     if (checkAuth()) {
-        return <Outlet />;
+        return (
+            <EmployeeLayout>
+                <Outlet />
+            </EmployeeLayout>
+        );
     }
 
-    return <Navigate to="/login" replace={true} />
+    return <Navigate to={appRoutes.login} replace={true} />
 }

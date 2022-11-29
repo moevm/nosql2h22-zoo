@@ -3,20 +3,37 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./providers";
 import { LoginPage } from "./pages";
 import { PrivateLayout } from "./layouts";
+import { appRoutes } from "./constants";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: appRoutes.root,
     element: <PrivateLayout />,
     children: [
       {
-        path: '/',
+        path: appRoutes.root,
         element: <div>Hello world!</div>,
+      },
+      {
+        path: appRoutes.animal,
+        element: <div>Animals</div>,
+      },
+      {
+        path: appRoutes.employee,
+        element: <div>Employees</div>,
+      },
+      {
+        path: appRoutes.timetable,
+        element: <div>Timetables</div>,
+      },
+      {
+        path: appRoutes.ticket,
+        element: <div>Tickets</div>,
       },
     ],
   },
   {
-    path: '/login',
+    path: appRoutes.login,
     element: <LoginPage />,
   },
 ]);

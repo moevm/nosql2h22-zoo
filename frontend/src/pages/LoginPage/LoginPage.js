@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Field, Form } from 'react-final-form';
 
 import {useAuthApp} from "../../hooks";
+import {appRoutes} from "../../constants";
 
 export const LoginPage = () => {
     const navigate = useNavigate()
@@ -14,7 +15,7 @@ export const LoginPage = () => {
         const loginData = await login(data);
         setLoginData(loginData);
         if (loginData.success) {
-            navigate('/');
+            navigate(appRoutes.root);
         }
     };
 
