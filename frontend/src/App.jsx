@@ -1,7 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./providers";
-import { LoginPage } from "./pages";
+import {EmployeePage, LoginPage} from "./pages";
 import { PrivateLayout } from "./layouts";
 import { appRoutes } from "./constants";
 
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       },
       {
         path: appRoutes.employee,
-        element: <div>Employees</div>,
+        element: <EmployeePage />,
       },
       {
         path: appRoutes.timetable,
