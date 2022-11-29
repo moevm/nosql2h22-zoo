@@ -1,5 +1,5 @@
 from pymemcache.client import base
-from db_types import EntityTypes
+from db_types import EntityTypes, EmployeeTypes
 import json
 import os
 
@@ -45,14 +45,6 @@ def set_many(json_data):
     return client.set_many(json_data)
 
 
-class Types(Enum):
-    ticket = 0
-    timetable = 1
-    employee = 2
-    animal = 3
-    schedule = 4
-
-
 def import_database_to_file(data):
     with open(os.path.dirname(os.path.abspath(__file__)) + "\\database.json", "w", encoding='utf-8') as f:
         f.write(json.dumps(data, ensure_ascii=False))
@@ -65,7 +57,7 @@ def export_database_from_file():
 
 
 def get_database():
-    return get_many([key.name for key in Types])
+    return get_many([key.name for key in EntityTypes])
 
 
 def get_collection(key):
@@ -83,7 +75,7 @@ def add_to_database(data):
         data = json.loads(data.encode('utf-8'))
 
     items = {}
-    for key in Types:
+    for key in EntityTypes:
         collection = get_value(key.name)
         if key.name in data:
             items[key.name] = data[key.name]
@@ -112,6 +104,17 @@ def remove_from_collection(collection_name, id):
             collection.remove(item)
             set_value(collection_name, collection)
             return
+
+
+def find_user_by_username_password(data):
+    employees = get_value(EntityTypes.employee.name)
+
+    for employee in employees:
+        if employee[EmployeeTypes.username.name] == data[EmployeeTypes.username.name]:
+            if employee[EmployeeTypes.password.name] == data[EmployeeTypes.password.name]:
+                return employee
+            else:
+                return None
 
 
 def init_database():
