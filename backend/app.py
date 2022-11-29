@@ -57,5 +57,6 @@ def request_remove_collection(collection):
         }
         return flask.Response(response=json.dumps(return_data), status=201)
 
+
 if __name__ == "__main__":
     app.run("localhost", port=6969, threaded=False)

@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class EntityTypes(Enum):
     ticket = 0
     timetable = 1
@@ -42,6 +43,7 @@ class ScheduleTypes(Enum):
     id_employee = 1
     id_timetable = 2
     id_animal = 3
+
 
 dict_types = {
     EntityTypes.ticket.name: TicketTypes,
