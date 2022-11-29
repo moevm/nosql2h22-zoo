@@ -43,9 +43,9 @@ export const HomePage = () => {
             </Box>
             <Box>
                 <iframe
-                    src="https://giphy.com/embed/rKj0oXtnMQNwY"
+                    src="https://giphy.com/embed/3d08SxjTjvfpUQAOYn"
                     width="480"
-                    height="356"
+                    height="480"
                     frameBorder="0"
                     className="giphy-embed"
                     allowFullScreen
