@@ -5,22 +5,23 @@
 
 <body>
     <div>This is simple test to get data from a backend</div>
-    <div><span>Last update: </span><span id="time-container"></span></div>
-    <div>
-        <label for="data-input">Data to send:</label>
-        <input type="text" id="data-input">
-        <button onclick="sendData()">Send data</button>
-    </div>
-    <div>
-        <div id="sent-data-container"></div>
-    </div>
-    <hr>
-    <div>
-        <button onclick="getUsers()">Get user data</button>
-        <div id="result-container"></div>
-    </div>
+        <div><span>Last update: </span><span id="time-container"></span></div>
+        <div>
+            <label for="data-input">Data to send:</label>
+            <input type="text" id="data-input">
+            <button onclick="sendData()">Send data</button>
+        </div>
+        <div>
+            <div id="sent-data-container"></div>
+        </div>
+        <hr>
+        <div>
+            <button onclick="getDatabase()">Get user data</button>
+            <div id="result-container"></div>
+        </div>
 </body>
 <script>
+    port = 6969
     var xhr = null;
 
     getXmlHttpRequestObject = function () {
@@ -41,12 +42,12 @@
             dataDiv.innerHTML = xhr.responseText;
         }
     }
-    function getUsers() {
-        console.log("Get users...");
+    function getDatabase() {
+        console.log("Get database...");
         xhr = getXmlHttpRequestObject();
         xhr.onreadystatechange = dataCallback;
         // asynchronous requests
-        xhr.open("GET", "http://localhost:6969/users", true);
+        xhr.open("GET", "http://localhost:" + port + "/database", true);
         // Send the request over the network
         xhr.send(null);
     }
@@ -78,10 +79,10 @@
         xhr = getXmlHttpRequestObject();
         xhr.onreadystatechange = sendDataCallback;
         // asynchronous requests
-        xhr.open("POST", "http://localhost:6969/users", true);
+        xhr.open("POST", "http://localhost:" + port + "/remove_ticket", true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         // Send the request over the network
-        xhr.send(JSON.stringify({"data": dataToSend}));
+        xhr.send(JSON.stringify({"id": dataToSend}));
     }
     (function () {
         getDate();
