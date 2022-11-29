@@ -1,6 +1,7 @@
 import flask
-from flask import Flask, request, make_response, jsonify
+from flask import Flask, request, make_response
 from flask_cors import CORS
+import json
 from database_processing import *
 from utils import *
 
@@ -40,7 +41,7 @@ def request_add_collection(collection):
             "status": "success",
             "message": f"received: {message}"
         }
-        return flask.Response(response=jsonify(return_data), status=201)
+        return flask.Response(response=json.dumps(return_data), status=201)
 
 
 @app.route("/remove/<collection>", methods=["GET", "POST"])
@@ -55,7 +56,7 @@ def request_remove_collection(collection):
             "status": "success",
             "message": f"received: {message}"
         }
-        return flask.Response(response=jsonify(return_data), status=201)
+        return flask.Response(response=json.dumps(return_data), status=201)
 
 
 @app.route("/login", methods=["POST"])
@@ -71,15 +72,13 @@ def request_login():
                 "status": "error",
                 "message": "Login or password invalid"
             }
-            return flask.Response(response=jsonify(return_data), status=401)
+            return flask.Response(response=json.dumps(return_data), status=401)
 
         return_data = {
             "status": "success",
             "id": user["id"]
         }
-        res = make_response(jsonify(return_data), 200)
-        res.set_cookie('AUTH_USER', str(user["id"]), max_age=60*60*24*365*2)
-        return res
+        return flask.Response(response=json.dumps(return_data), status=200)
 
 
 if __name__ == "__main__":
