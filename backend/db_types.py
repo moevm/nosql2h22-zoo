@@ -10,7 +10,7 @@ class EntityTypes(Enum):
 
 class EmployeeTypes(Enum):
     id = 0
-    FIO = 1
+    username = 1
     position = 2
     password = 3
 
@@ -18,7 +18,7 @@ class EmployeeTypes(Enum):
 class TicketTypes(Enum):
     id = 0
     date = 1
-    FIO = 2
+    username = 2
     price = 3
 
 

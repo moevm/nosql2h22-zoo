@@ -3,13 +3,13 @@
     {
       "id": 1,
       "date": "2022-11-24",
-      "FIO": "Pya Son Khwa",
+      "username": "Pya Son Khwa",
       "price": "100"
     },
     {
       "id": 2,
       "date": "2022-11-24",
-      "FIO": "Pya Son Khwa",
+      "username": "Pya Son Khwa",
       "price": "200"
     }
   ],
@@ -24,13 +24,13 @@
   "employee": [
     {
       "id": 1,
-      "FIO": "Milana",
+      "username": "Milana",
       "position": "Martyr",
       "password": "123456789"
     },
     {
       "id": 2,
-      "FIO": "Karpekina Anna",
+      "username": "Karpekina Anna",
       "position": "Veterinarian",
       "password": "987654321"
     }

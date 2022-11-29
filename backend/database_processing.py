@@ -1,5 +1,5 @@
 from pymemcache.client import base
-from db_types import EntityTypes
+from db_types import EntityTypes, EmployeeTypes
 import json
 import os
 
@@ -103,6 +103,17 @@ def remove_from_collection(collection_name, id):
             collection.remove(item)
             set_value(collection_name, collection)
             return
+
+
+def find_user_by_username_password(data):
+    employees = get_value(EntityTypes.employee.name)
+
+    for employee in employees:
+        if employee[EmployeeTypes.username.name] == data[EmployeeTypes.username.name]:
+            if employee[EmployeeTypes.password.name] == data[EmployeeTypes.password.name]:
+                return employee
+            else:
+                return None
 
 
 def init_database():
