@@ -10,17 +10,11 @@ const links = [{
         name: 'animals',
         url: appRoutes.animal,
     }, {
-        name: 'employees',
-        url: appRoutes.employee,
-    }, {
         name: 'timetables',
         url: appRoutes.timetable,
-    }, {
-        name: 'tickets',
-        url: appRoutes.ticket,
-    },];
+    }, ];
 
-export const EmployeeLayout = ({ children }) => {
+export const UserLayout = ({ children }) => {
     return (
         <BaseLayout
             header={<BaseLayoutHeader links={links}/>}
