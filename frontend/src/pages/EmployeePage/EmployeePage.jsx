@@ -15,7 +15,7 @@ export const EmployeePage = () => {
     return (
         <Box display="flex" flexDirection="column">
             <Box>
-                <Typography variant="h2">Employees</Typography>
+                <Typography variant="h3">Employees</Typography>
             </Box>
             <EmployeeTable employees={employees}/>
         </Box>
