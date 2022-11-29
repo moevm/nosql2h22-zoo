@@ -3,12 +3,20 @@ import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow}
 
 export const BasicTable = ({ columns, tableData }) => {
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ marginTop: 2 }}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
                         {columns.map((column) => {
-                            return <TableCell align="right">{column.name}</TableCell>
+                            return (
+                                <TableCell
+                                    key={column.name}
+                                    sx={headerCellStyle}
+                                    align="right"
+                                >
+                                    {column.name}
+                                </TableCell>
+                            )
                         })}
                     </TableRow>
                 </TableHead>
@@ -30,3 +38,8 @@ export const BasicTable = ({ columns, tableData }) => {
         </TableContainer>
     );
 }
+
+const headerCellStyle = {
+    backgroundColor: '#c5c5c5',
+    fontWeight: 700,
+};

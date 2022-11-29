@@ -6,14 +6,18 @@ import {EmployeeTable} from "../../components";
 import {request} from "../../utils";
 
 export const EmployeePage = () => {
-    const employee = request({}, '/employee', 'GET');
+    const [employees, setEmployees] = React.useState([]);
+
+    React.useEffect(() => {
+        request('GET', 'employee').then(setEmployees)
+    }, []);
 
     return (
-        <Box display="flex">
+        <Box display="flex" flexDirection="column">
             <Box>
                 <Typography variant="h2">Employees</Typography>
             </Box>
-            <EmployeeTable employees={employee}/>
+            <EmployeeTable employees={employees}/>
         </Box>
     );
 }

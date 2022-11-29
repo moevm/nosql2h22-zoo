@@ -11,9 +11,8 @@ export const BaseLayoutHeader = ({ links }) => {
             <Container maxWidth="xl">
                 <Toolbar sx={{ justifyContent: 'space-around'}}>
                     {links.map((link) => (
-                        <Box>
+                        <Box key={link.name}>
                             <Button
-                                key={link.name}
                                 onClick={() => { navigate(link.url)}}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >

@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = React.useCallback(async ({ username, password }) => {
-        const data = await request({ username, password }, 'login', 'POST');
+        const data = await request('POST','login', { username, password });
         if (data.status === 'success') {
             setCookie('AUTH_USER', data?.id);
             userId.current = data?.id;
