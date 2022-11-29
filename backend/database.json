@@ -26,12 +26,14 @@
       "id": "12aa12",
       "username": "Milana",
       "position": "Martyr",
+      "role": "admin",
       "password": "123456789"
     },
     {
       "id": 2,
-      "username": "Karpekina Anna",
+      "username": "Anna",
       "position": "Veterinarian",
+      "role": "not-admin",
       "password": "987654321"
     }
   ],

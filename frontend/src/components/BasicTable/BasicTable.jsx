@@ -1,7 +1,7 @@
 import React from "react";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 
-export default function BasicTable({ columns, tableData }) {
+export const BasicTable = ({ columns, tableData }) => {
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
