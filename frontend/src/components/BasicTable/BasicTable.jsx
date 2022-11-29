@@ -1,7 +1,7 @@
 import React from "react";
-import {Paper, Table, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 
-export default function BasicTable({ columns }) {
+export default function BasicTable({ columns, tableData }) {
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -12,6 +12,20 @@ export default function BasicTable({ columns }) {
                         })}
                     </TableRow>
                 </TableHead>
+                <TableBody>
+                    {tableData.map((item) => {
+                        return (
+                            <TableRow
+                                key={item.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                                {columns.map((column) => {
+                                    return <TableCell align="right">{column.render(item)}</TableCell>
+                                })}
+                            </TableRow>
+                        );
+                    })}
+                </TableBody>
             </Table>
         </TableContainer>
     );
