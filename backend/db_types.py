@@ -12,7 +12,8 @@ class EmployeeTypes(Enum):
     id = 0
     username = 1
     position = 2
-    password = 3
+    role = 3
+    password = 4
 
 
 class TicketTypes(Enum):

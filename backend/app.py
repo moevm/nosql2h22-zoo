@@ -76,7 +76,8 @@ def request_login():
 
         return_data = {
             "status": "success",
-            "id": user["id"]
+            "id": user["id"],
+            "role": user["role"]
         }
         return flask.Response(response=json.dumps(return_data), status=200)
 
