@@ -1,7 +1,8 @@
 from pymemcache.client import base
-from db_types import EntityTypes, EmployeeTypes
+from db_types import EntityTypes
 import json
 import os
+
 
 def json_serializer(key, value):
     if type(value) == str:
@@ -66,7 +67,8 @@ def get_collection(key):
 def add_to_collection(collection_name, data):
     collection = get_value(collection_name)
     collection.append(data)
-    add_to_database({ collection_name: collection })
+    add_to_database({collection_name: collection})
+
 
 def add_to_database(data):
     if type(data) == str:
@@ -108,6 +110,4 @@ def init_database():
     data = export_database_from_file()
     add_to_database(data)
     database = get_database()
-    # set_value("ticket1", {"date": "2022-11-24", "FIO": "Пя Сон Хва", "price": "100"})
-    # value = get_value("ticket1")
     print("init database: ", database)
