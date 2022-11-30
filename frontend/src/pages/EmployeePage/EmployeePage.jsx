@@ -1,14 +1,16 @@
 import React from "react";
 
-import {Box, Typography} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 import { Navigate } from "react-router-dom";
 
 import {EmployeeTable} from "../../components";
 import {request} from "../../utils";
-import {useAuthApp} from "../../hooks";
-import {appRoutes} from "../../constants";
+import {useAuthApp, useModal} from "../../hooks";
+import {appRoutes, ModalId} from "../../constants";
+import {Add} from "@mui/icons-material";
 
 export const EmployeePage = () => {
+    const { openModal } = useModal();
     const { checkAdmin } = useAuthApp();
     const [employees, setEmployees] = React.useState([]);
 
@@ -21,8 +23,19 @@ export const EmployeePage = () => {
     }
     return (
         <Box display="flex" flexDirection="column">
-            <Box>
-                <Typography variant="h3">Employees</Typography>
+            <Box display="flex" justifyContent="space-between">
+                <Box>
+                    <Typography variant="h3">Employees</Typography>
+                </Box>
+                <Box>
+                    <Button
+                        startIcon={<Add />}
+                        onClick={() => {openModal(ModalId.EmployeeCreate)}}
+                        variant="contained"
+                    >
+                        Add Employee
+                    </Button>
+                </Box>
             </Box>
             <EmployeeTable employees={employees}/>
         </Box>
