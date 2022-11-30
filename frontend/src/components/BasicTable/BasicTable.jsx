@@ -12,7 +12,7 @@ export const BasicTable = ({ columns, tableData }) => {
                                 <TableCell
                                     key={column.name}
                                     sx={headerCellStyle}
-                                    align="right"
+                                    align="left"
                                 >
                                     {column.name}
                                 </TableCell>
@@ -25,10 +25,10 @@ export const BasicTable = ({ columns, tableData }) => {
                         return (
                             <TableRow
                                 key={item.id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 }, maxWidth: '250px' }}
                             >
                                 {columns.map((column) => {
-                                    return <TableCell align="right">{column.render(item)}</TableCell>
+                                    return <TableCell sx={{ maxWidth: '100px' }} align="left">{column.render(item)}</TableCell>
                                 })}
                             </TableRow>
                         );
@@ -42,4 +42,5 @@ export const BasicTable = ({ columns, tableData }) => {
 const headerCellStyle = {
     backgroundColor: '#c5c5c5',
     fontWeight: 700,
+    maxWidth: '100px',
 };

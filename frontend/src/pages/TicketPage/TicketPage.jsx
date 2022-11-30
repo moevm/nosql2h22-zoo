@@ -1,14 +1,16 @@
 import React from "react";
 
-import {Box, Typography} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 
 import {TicketTable} from "../../components";
 import {request} from "../../utils";
 import {Navigate} from "react-router-dom";
-import {appRoutes} from "../../constants";
-import {useAuthApp} from "../../hooks";
+import {appRoutes, ModalId} from "../../constants";
+import {useAuthApp, useModal} from "../../hooks";
+import {Add} from "@mui/icons-material";
 
 export const TicketPage = () => {
+    const { openModal } = useModal();
     const { checkAdmin } = useAuthApp();
     const [tickets, setTickets] = React.useState([]);
 
@@ -21,8 +23,19 @@ export const TicketPage = () => {
     }
     return (
         <Box display="flex" flexDirection="column">
-            <Box>
-                <Typography variant="h3">Tickets</Typography>
+            <Box display="flex" justifyContent="space-between">
+                <Box>
+                    <Typography variant="h3">Tickets</Typography>
+                </Box>
+                <Box>
+                    <Button
+                        startIcon={<Add />}
+                        onClick={() => {openModal(ModalId.TicketCreate)}}
+                        variant="contained"
+                    >
+                        Add Ticket
+                    </Button>
+                </Box>
             </Box>
             <TicketTable tickets={tickets}/>
         </Box>

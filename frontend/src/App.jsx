@@ -4,6 +4,8 @@ import { AuthProvider } from "./providers";
 import {AnimalPage, EmployeePage, HomePage, LoginPage, TicketPage, TimetablePage} from "./pages";
 import { PrivateLayout } from "./layouts";
 import { appRoutes } from "./constants";
+import {ModalsProvider} from "./providers/ModalProvider";
+import {AnimalCreate, EmployeeCreate, TicketCreate, TimetableCreate} from "./modals";
 
 const router = createBrowserRouter([
   {
@@ -41,7 +43,14 @@ const router = createBrowserRouter([
 export const App = () => {
   return (
       <AuthProvider>
-        <RouterProvider router={router} />
+        <ModalsProvider>
+          <RouterProvider router={router} />
+
+          <EmployeeCreate />
+          <AnimalCreate />
+          <TicketCreate />
+          <TimetableCreate />
+        </ModalsProvider>
       </AuthProvider>
   );
 }
