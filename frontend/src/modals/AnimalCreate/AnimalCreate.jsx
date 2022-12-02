@@ -79,6 +79,7 @@ export const AnimalCreate = () => {
                                     {props => (
                                         <Grid item xs={12}>
                                             <TextField
+                                                type = {"number"}
                                                 fullWidth
                                                 label="aviary"
                                                 name={props.input.name}
