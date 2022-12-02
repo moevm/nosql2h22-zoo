@@ -55,14 +55,14 @@ export const EmployeeCreate = () => {
                                 </Field>
                                 <Field name="position">
                                     {props => (
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                fullWidth
-                                                label="Position"
-                                                name={props.input.name}
-                                                value={props.input.value}
-                                                onChange={props.input.onChange}
-                                            />
+                                        <Grid item xs={12} >
+                                            <select name={props.input.name} value={props.input.value} onChange={props.input.onChange}>
+                                                <option value="director">director</option>
+                                                <option value="sis admin">sis admin</option>
+                                                <option value="veterinarian">veterinarian</option>
+                                                <option value="cleaner">cleaner</option>
+                                                <option value="zookeeper">zookeeper</option>
+                                            </select>
                                         </Grid>
                                     )}
                                 </Field>
