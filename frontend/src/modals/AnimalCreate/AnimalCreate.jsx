@@ -67,14 +67,11 @@ export const AnimalCreate = () => {
                                 </Field>
                                 <Field name="gender">
                                     {props => (
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                fullWidth
-                                                label="Gender"
-                                                name={props.input.name}
-                                                value={props.input.value}
-                                                onChange={props.input.onChange}
-                                            />
+                                        <Grid item xs={12} >
+                                            <select name={props.input.name} value={props.input.value} onChange={props.input.onChange}>
+                                                <option value="male">male</option>
+                                                <option value="female">female</option>
+                                            </select>
                                         </Grid>
                                     )}
                                 </Field>
