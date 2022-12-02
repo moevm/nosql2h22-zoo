@@ -12,6 +12,9 @@ const links = [{
     }, {
         name: 'timetables',
         url: appRoutes.timetable,
+    }, {
+        name: 'videos',
+        url: appRoutes.video,
     }, ];
 
 export const UserLayout = ({ children }) => {
