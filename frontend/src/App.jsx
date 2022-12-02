@@ -1,7 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./providers";
-import {AnimalPage, EmployeePage, HomePage, LoginPage, TicketPage, TimetablePage} from "./pages";
+import {AnimalPage, EmployeePage, HomePage, LoginPage, TicketPage, TimetablePage, VideoPage} from "./pages";
 import { PrivateLayout } from "./layouts";
 import { appRoutes } from "./constants";
 import {ModalsProvider} from "./providers/ModalProvider";
@@ -31,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: appRoutes.ticket,
         element: <TicketPage />,
+      },
+      {
+        path: appRoutes.video,
+        element: <VideoPage />,
       },
     ],
   },

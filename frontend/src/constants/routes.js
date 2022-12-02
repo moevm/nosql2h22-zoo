@@ -5,4 +5,5 @@ export const appRoutes = {
     employee: '/employee',
     ticket: '/ticket',
     timetable: '/timetable',
+    video: '/video',
 }

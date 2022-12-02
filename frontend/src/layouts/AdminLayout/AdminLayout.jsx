@@ -18,6 +18,9 @@ const links = [{
     }, {
         name: 'tickets',
         url: appRoutes.ticket,
+    }, {
+        name: 'videos',
+        url: appRoutes.video,
     },];
 
 export const AdminLayout = ({ children }) => {
