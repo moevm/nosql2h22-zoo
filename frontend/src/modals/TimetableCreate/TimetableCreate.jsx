@@ -56,10 +56,11 @@ export const TimetableCreate = () => {
                                 </Field>
                                 <Field name="time_from">
                                     {props => (
-                                        <Grid item xs={12}>
+                                       <Grid item xs={12}>
+                                            <p>From</p>
                                             <TextField
+                                                type={"time"}
                                                 fullWidth
-                                                label="From"
                                                 name={props.input.name}
                                                 value={props.input.value}
                                                 onChange={props.input.onChange}
@@ -70,9 +71,10 @@ export const TimetableCreate = () => {
                                 <Field name="time_to">
                                     {props => (
                                         <Grid item xs={12}>
+                                            <p>To</p>
                                             <TextField
+                                                type={"time"}
                                                 fullWidth
-                                                label="To"
                                                 name={props.input.name}
                                                 value={props.input.value}
                                                 onChange={props.input.onChange}
